@@ -43,7 +43,7 @@ This application is built using a serverless architecture on AWS:
 - **Database**: DynamoDB
 - **Infrastructure as Code**: Terraform
 
-For more details, see the [documentation](docs/index.md).
+For detailed architecture information, see the [Architecture Documentation](docs/architecture.md).
 
 ## Technology Stack
 
@@ -79,8 +79,6 @@ The project demonstrates several key technical concepts:
 - **Frontend Architecture**: Building a responsive React application
 - **CI/CD Integration**: Automating deployment processes
 
-For detailed documentation, see the [documentation](docs/index.md).
-
 ## Deployment
 
 The application can be deployed with a single command using the provided deployment script:
@@ -97,7 +95,7 @@ This script will:
 5. Deploy the frontend to S3
 6. Display the deployment information
 
-For deployment instructions, see the [documentation](docs/index.md).
+For detailed deployment instructions with step-by-step commands, see the [Deployment Guide](docs/deployment.md).
 
 ## Prerequisites
 
@@ -119,5 +117,8 @@ npm start
 
 ## Documentation
 
-Comprehensive documentation is available in the [documentation index](docs/index.md).
+The project documentation is divided into two main areas:
+
+- [Architecture Documentation](docs/architecture.md) - Detailed overview of the system architecture, components, data flow, and security considerations
+- [Deployment Guide](docs/deployment.md) - Step-by-step deployment instructions with actual commands for local development and AWS deployment
 

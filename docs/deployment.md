@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide provides instructions for deploying the Financial Dashboard application to AWS.
+This guide provides detailed instructions for deploying the Financial Dashboard application to AWS.
 
 ## Prerequisites
 
@@ -11,131 +11,166 @@ Before deploying the application, ensure you have the following prerequisites in
 - **Node.js and npm**: Version 14.x or later
 - **Git**: For version control
 
-## Deployment Process Overview
+You can verify your installations with:
 
-The deployment process consists of the following steps:
+```bash
+# Check AWS CLI installation
+aws --version
 
-1. Clone the repository
-2. Deploy the infrastructure using Terraform
-3. Build the frontend application
-4. Deploy the frontend to S3
-5. Verify the deployment
+# Check Terraform installation
+terraform --version
 
-## Detailed Deployment Steps
+# Check Node.js and npm installation
+node --version
+npm --version
 
-### 1. Clone the Repository
+# Check Git installation
+git --version
+```
 
-First, clone the repository to your local machine:
+## Deployment Options
 
-1. Open a terminal window
-2. Navigate to your desired directory
-3. Clone the repository
-4. Navigate to the project directory
+The Financial Dashboard application can be deployed in two ways:
 
-### 2. Deploy the Infrastructure
+1. **Automated Deployment**: Using the provided deployment script
+2. **Manual Deployment**: Step-by-step deployment process
 
-Deploy the AWS infrastructure using Terraform:
+Both methods require you to clone the repository first:
 
-1. Navigate to the Terraform directory for your desired environment
-2. Initialize Terraform
-3. Review the deployment plan
-4. Apply the Terraform configuration
-5. Note the outputs for later use
+```bash
+# Navigate to your desired directory
+cd ~/projects
 
-### 3. Configure the Frontend
+# Clone the repository
+git clone https://github.com/your-username/financial-dashboard.git
 
-Configure the frontend application with the deployed infrastructure details:
+# Navigate to the project directory
+cd financial-dashboard
+```
 
-1. Navigate to the frontend directory
-2. Create an environment file
-3. Add the necessary configuration values from the Terraform outputs
+## Option 1: Automated Deployment
 
-### 4. Build the Frontend
+For a quick and seamless deployment, use the provided deployment script:
 
-Build the frontend application for production:
+```bash
+# Make the deployment script executable
+chmod +x deploy.sh
 
-1. Install dependencies
-2. Build the application
-
-### 5. Deploy the Frontend
-
-Deploy the built frontend to the S3 bucket:
-
-1. Upload the build files to the S3 bucket
-2. Ensure proper cache settings
-
-### 6. Verify the Deployment
-
-Verify that the application is working correctly:
-
-1. Access the application using the CloudFront URL
-2. Test user registration and login
-3. Verify that the dashboard and other features are working correctly
-
-## Automated Deployment
-
-For convenience, an automated deployment script is provided:
-
-1. Make the deployment script executable
-2. Run the deployment script
-3. Follow the prompts to complete the deployment
+# Run the deployment script
+./deploy.sh
+```
 
 The script will:
 - Check for required tools and AWS credentials
 - Deploy the infrastructure using Terraform
-- Update the frontend environment variables
-- Build the frontend application
+- Configure and build the frontend application
 - Deploy the frontend to S3
-- Display the deployment information
+- Display the deployment information and URLs
 
-## Environment-Specific Deployments
+## Option 2: Manual Deployment
 
-The application supports multiple deployment environments:
+If you prefer to deploy the application step by step, follow these instructions:
 
-### Development Environment
+### 1. Deploy Infrastructure with Terraform
 
-The development environment is used for testing new features:
+```bash
+# Navigate to the Terraform directory
+cd terraform/environments/dev
 
-1. Use the `dev` environment configuration
-2. Deploy with development-specific settings
-3. Enable additional logging and debugging
+# Initialize Terraform
+terraform init
 
-### Production Environment
+# Review the deployment plan
+terraform plan
 
-The production environment is used for the live application:
+# Apply the Terraform configuration
+terraform apply
 
-1. Use the `prod` environment configuration
-2. Deploy with production-specific settings
-3. Enable additional security measures
+# After confirming, note the outputs for later use
+terraform output
+```
 
-## Troubleshooting
+Important outputs to note:
+- `api_gateway_url`: The URL for the API Gateway endpoint
+- `cognito_user_pool_id`: The ID of the Cognito User Pool
+- `cognito_client_id`: The ID of the Cognito User Pool Client
+- `cloudfront_distribution_url`: The URL of the CloudFront distribution
+- `frontend_bucket_name`: The name of the S3 bucket for the frontend
 
-If you encounter issues during deployment, try the following troubleshooting steps:
+### 2. Configure the Frontend
 
-### Infrastructure Deployment Issues
+```bash
+# Navigate to the frontend directory
+cd ../../src/frontend
 
-1. Check Terraform logs for errors
-2. Verify AWS credentials
-3. Ensure sufficient permissions
+# Create a new .env file from the example
+cp .env.example .env
+```
 
-### Frontend Deployment Issues
+Edit the `.env` file with the values from your Terraform outputs:
 
-1. Check S3 bucket permissions
-2. Verify CloudFront distribution status
-3. Check for build errors
+```
+REACT_APP_AWS_REGION=your-aws-region
+REACT_APP_USER_POOL_ID=your-user-pool-id
+REACT_APP_USER_POOL_CLIENT_ID=your-user-pool-client-id
+REACT_APP_API_URL=your-api-gateway-url
+REACT_APP_ENV=development
+```
 
-### Application Issues
+### 3. Build and Deploy the Frontend
 
-1. Check CloudWatch Logs for Lambda function errors
-2. Verify Cognito user pool configuration
-3. Test API endpoints directly
+```bash
+# Install dependencies
+npm install
+
+# Build the application
+npm run build
+
+# Deploy to S3 bucket
+aws s3 sync build/ s3://$(terraform -chdir=../../terraform/environments/dev output -raw frontend_bucket_name)/ --delete
+```
+
+### 4. Verify the Deployment
+
+```bash
+# Get the CloudFront URL
+CLOUDFRONT_URL=$(terraform -chdir=../../terraform/environments/dev output -raw cloudfront_distribution_url)
+
+# Open the application in your default browser
+open $CLOUDFRONT_URL
+```
+
+Then:
+1. Test user registration and login
+2. Verify that the dashboard and other features are working correctly
+
+## Local Development
+
+For local development, you can run the frontend application with:
+
+```bash
+# Navigate to the frontend directory
+cd src/frontend
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm start
+```
+
+This will start the React development server on `http://localhost:3000`.
 
 ## Cleanup
 
 To remove all deployed resources when they are no longer needed:
 
-1. Navigate to the Terraform directory
-2. Run the destroy command
-3. Confirm the destruction
+```bash
+# Navigate to the Terraform directory
+cd terraform/environments/dev
+
+# Run the destroy command
+terraform destroy
+```
 
 This will remove all AWS resources created for the application, including S3 buckets, Lambda functions, DynamoDB tables, and CloudFront distributions. 

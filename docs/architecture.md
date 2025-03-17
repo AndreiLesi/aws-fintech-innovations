@@ -1,16 +1,44 @@
 # Financial Dashboard Architecture
 
-This document provides a comprehensive overview of the Financial Dashboard application architecture.
+This document provides a comprehensive overview of the Financial Dashboard application architecture and features.
 
-## Overview
+## Project Overview
 
-The Financial Dashboard is a serverless application built on AWS that allows users to track their financial transactions and monitor stock market data. The application follows modern cloud architecture principles, leveraging serverless components to ensure scalability, reliability, and cost-effectiveness.
+The Financial Dashboard is a serverless application built on AWS that allows users to track their financial transactions and monitor stock market data. The application showcases modern cloud architecture principles, serverless design patterns, and frontend development techniques.
+
+## Key Features
+
+- **Real-time Financial Data**: View up-to-date stock market data
+- **Market Analysis**: Analyze stock performance and trends
+- **User Authentication**: Secure user authentication and authorization
+- **Responsive Design**: Optimized for desktop and mobile devices
+- **Serverless Architecture**: Scalable and cost-effective infrastructure
+
+## Technology Stack
+
+### Frontend
+- React.js
+- Styled Components
+- React Router
+- Axios
+
+### Backend
+- AWS Lambda
+- Amazon API Gateway
+- Amazon DynamoDB
+- Amazon Cognito
+
+### Infrastructure
+- Terraform
+- AWS S3
+- AWS CloudFront
+- AWS DynamoDB
 
 ## Architecture Diagram
 
-The architecture diagram is available as a Draw.io file at [images/architecture.drawio](images/architecture.drawio) and as a static image at [images/architecture.jpeg](images/architecture.jpeg).
+The architecture diagram is available as a Draw.io file at [images/architecture.drawio](images/architecture.drawio) and as a static image at [images/architecture.jpg](images/architecture.jpg).
 
-![Financial Dashboard Architecture](images/architecture.jpeg)
+![Financial Dashboard Architecture](images/architecture.jpg)
 
 ## Component Description
 
@@ -122,14 +150,6 @@ The serverless architecture allows the application to scale automatically based 
 - **CloudFront**: Distributes content globally with edge caching
 - **API Gateway**: Handles thousands of concurrent API calls
 
-## Deployment
-
-The application is deployed using Terraform, which provides infrastructure as code capabilities:
-
-- **Terraform Modules**: Modular approach for different components (Lambda, DynamoDB, API Gateway, etc.)
-- **Environment Separation**: Different environments (dev, staging, prod) with isolated resources
-- **CI/CD Integration**: Automated deployment through CI/CD pipelines
-
 ## Monitoring and Logging
 
 - **CloudWatch Logs**: All Lambda functions log to CloudWatch for centralized logging
@@ -142,4 +162,17 @@ The application is deployed using Terraform, which provides infrastructure as co
 - **Serverless Architecture**: Pay only for what you use
 - **CloudFront Caching**: Reduces origin requests to S3
 - **Lambda Optimization**: Functions sized appropriately for their workload
-- **DynamoDB On-Demand**: Scales automatically without over-provisioning 
+- **DynamoDB On-Demand**: Scales automatically without over-provisioning
+
+## Project Purpose
+
+This project was created to demonstrate proficiency in:
+
+1. Serverless architecture design
+2. AWS cloud services implementation
+3. Infrastructure as Code using Terraform
+4. Modern frontend development with React
+5. Secure authentication and authorization
+6. API design and implementation
+
+The application showcases best practices in cloud architecture, including scalability, security, and cost optimization. 
